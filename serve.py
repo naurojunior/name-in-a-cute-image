@@ -4,17 +4,22 @@ from flask import (
     request
 )
 
-# Create the application instance
-app = Flask(__name__, template_folder="templates")
+from images import (
+    image_with_text,
+    save_image
+)
 
-# Create a URL route in our application for "/"
+import uuid
+
+app = Flask(__name__)
+
 @app.route('/image', methods=['POST'])
 def image():
+    output_filename = str(uuid.uuid4()) + ".jpg"
+
     data = request.json
+    save_image(image_with_text(data['name']), ("temp/" + output_filename) )
+    return jsonify({'filename' : output_filename})
 
-    name['name']
-    return jsonify(data)
-
-# If we're running in stand alone mode, run the application
 if __name__ == '__main__':
     app.run(debug=True)
